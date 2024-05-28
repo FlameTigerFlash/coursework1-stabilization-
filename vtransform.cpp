@@ -1,22 +1,5 @@
 #include <math.h>
-
-
-double dist(double p1[3], double p2[3] = {0,0,0})
-{
-	return sqrt((p1[1] - p2[1]) * (p1[1] - p2[1]) + (p1[2] - p2[2]) * (p1[2] - p2[2]) + (p1[3] - p2[3]) * (p1[3] - p2[3]));
-}
-
-double* multiply(double v1[3], double n)
-{
-	double res[3] = { v1[1] * n, v1[2] * n, v1[3] * n };
-	return res;
-}
-
-double* normalize(double v1[3], double n)
-{
-	double d = dist(v1, { 0,0,0 });
-	return multiply(v1, n / d);
-}
+#include "vector3.h"
 
 double* transform(double v[3], double a1, double a2, double a3)
 {
@@ -31,25 +14,35 @@ double* transform(double v[3], double a1, double a2, double a3)
 	return res;
 }
 
-double** makeCircle(double p1[3], double p2[3], double h, int num = 1)
+vector3* makeCircle(vector3 p1, vector3 p2, double h, int num = 1)
 {
-	double** res = new double[3][num];
+	vector3* res = new vector3[num];
 
-	double floor[3] = fmin(p1[3], p2[3]);
-	double d = dist({ p1[1], p1[2], floor }, { p2[1], p2[2], floor });
+	double floor = fmin(p1.z, p2.z);
+	vector3 radVec = p2 - p1; radVec.z = 0;
 
-	double radius_vector[3] = {p1[1] - p2[1], p1[2] - p2[2], 0};
-	radius_vector = normalize(radius_vector, h);
-	double center[3] = {p2[1] + radius_vector[1], p2[2] + radius_vector[2], p2[3] + radius_vector[3]};
+	vector3 center;
+	if (p1.z > p2.z)
+	{
+		center = p2 + radVec.normalized(-h);
+	}
+	else
+	{
+		center = p1 + radVec.normalized(h);
+	}
+	center.z = floor;
 
-	double flat_vector[3] = {p2[1] - p1[1], p2[2] - p1[2], 0};
-	flat_vector = normalize(flat_vector, ((double)1)/ num);
+	double dist = radVec.len();
+	vector3 start = p1; start.z = floor;
+	vector3 step = radVec.normalized(dist / num);
+	
 	for (int i = 0; i < num; i++)
 	{
-		double flatPoint[3] = { p1[1] + flat_vector[1] * (i + 1), p1[2] + flat_vector[2] * (i + 1), floor};
-		double curDist = dist(flatPoint, center);
-		double newH = floor + sqrt(fabs(h * h - curDist * curDist));
-		res[i][0] = flatPoint[0]; res[i][1] = flatPoint[1]; res[i][2] = newH;
+		vector3 newP = center + step * (i + 1);
+		double l = step.len() * (i + 1);
+		double newZ = floor + sqrt(fabs(h * h - l * l));
+		newP.z = newZ;
+		res[i] = newP;
 	}
 
 	return res;

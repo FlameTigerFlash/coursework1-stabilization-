@@ -1,26 +1,23 @@
-#pragma once
-
 class vector3
 {
 public:
 	double x = 0;
 	double y = 0;
 	double z = 0;
-	vector3(int x = 0, int y = 0, int z = 0)
+
+	vector3(double x = 0, double y = 0, double z = 0)
 	{
 		this->x = x;
 		this->y = y;
 		this->z = z;
 	}
-	vector3(vector3& vec1)
-	{
-		this->x = vec1->x;
-		this->y = vec1->y;
-		this->z = vec1->z;
-	}
+	vector3(const vector3& vec1);
+
 	double len();
-	vector3 operator +(vector3& vec1, vector3& vec2);
-	vector3 operator -(vector3& vec1, vector3& vec2);
-	vector3 operator *(vector3& vec1, double num);
-	vector3 normalized (vector3& vec1, double num);
+	vector3 operator +(const vector3& vec2);
+	vector3 operator -(const vector3& vec2);
+	vector3 operator *(double num);
+	vector3& operator=(const vector3& vec2);
+	vector3 normalized (double num);
+	double distance(const vector3& vec2);
 };
