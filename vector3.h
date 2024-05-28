@@ -21,4 +21,6 @@ public:
 	double len();
 	vector3 operator +(vector3& vec1, vector3& vec2);
 	vector3 operator -(vector3& vec1, vector3& vec2);
+	vector3 operator *(vector3& vec1, double num);
+	vector3 normalized (vector3& vec1, double num);
 };
