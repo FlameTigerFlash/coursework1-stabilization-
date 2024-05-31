@@ -6,9 +6,11 @@ MPU6050 mpu;
 
 uint8_t fifoBuffer[45];
 
+
+
 void setup()
 {
-  return;
+	sensor_setup(mpu);
 }
 void loop()
 {

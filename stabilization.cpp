@@ -1,16 +1,15 @@
 #include "stabilization.h"
+#include "vector3.h"
 
-template<typename T> T min(T a, T b)
-{
-	if (a < b) return a;
-	return b;
-}
+#ifndef max
+#define max(a,b) a>b? a:b
+#endif
 
-template<typename T> T max(T a, T b)
-{
-	if (a > b) return a;
-	return b;
-}
+#ifndef min
+#define min(a,b) a<b? a:b
+#endif
+
+
 
 template<typename T> T clamp(T val, T left, T right)
 {
@@ -46,13 +45,7 @@ template<typename T> T clamp(T val, T left, T right)
 }*/
 
 
-
-pos* stabilize(pos* cur)
+vector3* stabilize(vector3* cur)
 {
-	pos* rightFront = &cur[0];
-	pos* leftFront = &cur[1];
-	pos* rightBack = &cur[2];
-	pos* leftBack = &cur[3];
-
 	return cur;
 }
