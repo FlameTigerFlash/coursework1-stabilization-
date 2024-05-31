@@ -24,8 +24,9 @@ double distance(vector3 v1, vector3 v2)
 	return sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z));
 }
 
-double* twoAngles(vector3 v1, vector3 v2)
+double* twoAngles(vector3 v2)
 {
+	vector3 v1(0, 0, -1);
 	vector3 v3 = v2; v3.x = 0;
 	double angle1 = angle(v1, v3);
 	if (v3.y < 0)
