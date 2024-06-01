@@ -1,6 +1,7 @@
 #include "sensor.h"
 #include "vtransform.h"
 #include "stabilization.h"
+#include "vector3.h"
 
 MPU6050 mpu;
 

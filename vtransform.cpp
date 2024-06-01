@@ -1,3 +1,4 @@
+#pragma once
 #include <math.h>
 #include "vector3.h"
 
@@ -24,20 +25,34 @@ double distance(vector3 v1, vector3 v2)
 	return sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z));
 }
 
-double* twoAngles(vector3 v1, vector3 v2)
+double* twoAngles(vector3 v2, double rad)
 {
-	vector3 v3 = v2; v3.x = 0;
-	double angle1 = angle(v1, v3);
-	if (v3.y < 0)
+	vector3 start = (0, 0, 0);
+	vector3 side = v2; side.x = 0;
+	double ret[2] = { 0, 0 };
+	if (side.len() < rad)
 	{
-		angle1 = -angle1;
+		return ret;
 	}
-	double angle2 = angle(v3, v2);
+	double rad2 = sqrt(side.len() * side.len() - rad * rad);
+	double dif = (rad * rad - rad2 * rad2) / (side.len());
+	vector3 aux = side.normalized((side.len() + dif) / 2);
+	vector3 perp(0, -aux.z, aux.y);
+	if (perp.y < 0)
+	{
+		perp = perp * (-1);
+	}
+	vector3 v1 = aux + perp.normalized(sqrt(rad * rad - aux.len() * aux.len()));
+	ret[0] = angle(vector3(0, rad, 0), v1);
+	if (v1.y < 0)
+	{
+		ret[0] *= (-1);
+	}
+	ret[1] = angle(v1, v2);
 	if (v2.x < 0)
 	{
-		angle2 = -angle2;
+		ret[1] *=  (-1);
 	}
-	double ret[2] = { angle1, angle2 };
 	return ret;
 }
 
