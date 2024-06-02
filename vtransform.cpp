@@ -1,4 +1,3 @@
-#pragma once
 #include <math.h>
 #include "vector3.h"
 
@@ -17,6 +16,10 @@ double* transform(double v[3], double a1, double a2, double a3)
 
 double angle(vector3 v1, vector3 v2)
 {
+  if (v1.len() == 0 or v2.len() == 0)
+  {
+    return 0;
+  }
 	return acos((v1.len()*v1.len() + v2.len()* v2.len() - (v1-v2).len() * (v1 - v2).len()) / (2 * v1.len() * v2.len()));
 }
 
@@ -25,11 +28,11 @@ double distance(vector3 v1, vector3 v2)
 	return sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z));
 }
 
-double* twoAngles(vector3 v2, double rad)
+double* moveData(vector3 v2, double rad)
 {
 	vector3 start = (0, 0, 0);
 	vector3 side = v2; side.x = 0;
-	double ret[2] = { 0, 0 };
+	double ret[3] = { 0, 0, 0};
 	if (side.len() < rad)
 	{
 		return ret;
@@ -53,6 +56,7 @@ double* twoAngles(vector3 v2, double rad)
 	{
 		ret[1] *=  (-1);
 	}
+	ret[2] = (v2 - v1).len();
 	return ret;
 }
 
