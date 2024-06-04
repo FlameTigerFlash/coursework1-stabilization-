@@ -34,6 +34,7 @@ double* moveData(vector3 v2, double rad)
 	vector3 side = v2; side.x = 0;
 	double ret[3] = { 0, 0, 0};
 	if (side.len() < rad)
+
 	{
 		return ret;
 	}
