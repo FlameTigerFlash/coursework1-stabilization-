@@ -28,36 +28,64 @@ double distance(vector3 v1, vector3 v2)
 	return sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z));
 }
 
-double* moveData(vector3 v2, double rad)
+double* intersection(double dist, double rad1, double rad2)
+{
+	double* ans = new double[2];
+	ans[0] = 0; ans[1] = ans[0];
+	
+	if (rad1 + dist < rad2 or rad2 + dist < rad1)
+	{
+		return ans;
+	}
+	if (dist > rad1 + rad2)
+	{
+		return ans;
+	}
+
+	double dif = (rad1 * rad1 - rad2 * rad2) / (dist);
+	double hor = (dist + dif) / 2;
+	double vert = sqrt(rad1 * rad1 - hor * hor);
+	ans[0] = atan(vert / hor);
+	ans[1] = atan(vert / (dist - hor));
+	return ans;
+}
+
+double* moveData(vector3 v2, double pt1, double pt2, double pt3)
 {
 	vector3 start = (0, 0, 0);
 	vector3 side = v2; side.x = 0;
-	double ret[3] = { 0, 0, 0};
-	if (side.len() < rad)
-
+	double ret[3] = { 0, 0, 0 };
+	if (side.len() < pt1)
 	{
 		return ret;
 	}
-	double rad2 = sqrt(side.len() * side.len() - rad * rad);
-	double dif = (rad * rad - rad2 * rad2) / (side.len());
+	
+	double rad2 = sqrt(side.len() * side.len() - pt1 * pt1);
+	double dif = (pt1 * pt1 - rad2 * rad2) / (side.len());
 	vector3 aux = side.normalized((side.len() + dif) / 2);
 	vector3 perp(0, -aux.z, aux.y);
 	if (perp.y < 0)
 	{
 		perp = perp * (-1);
 	}
-	vector3 v1 = aux + perp.normalized(sqrt(rad * rad - aux.len() * aux.len()));
-	ret[0] = angle(vector3(0, rad, 0), v1);
+
+	vector3 v1 = aux + perp.normalized(sqrt(pt1 * pt1 - aux.len() * aux.len()));
+	ret[0] = angle(vector3(0, pt1, 0), v1);
 	if (v1.y < 0)
 	{
 		ret[0] *= (-1);
 	}
-	ret[1] = angle(v1, v2);
+
+	ret[1] = angle(vector3(0, 0, -pt1), (v2 - v1));
 	if (v2.x < 0)
 	{
-		ret[1] *=  (-1);
+		ret[1] *= (-1);
 	}
-	ret[2] = (v2 - v1).len();
+
+	double* bend = intersection(pt2, pt3, distance(v1, v2));
+	ret[1] -= bend[0];
+	ret[2] = bend[1];
+
 	return ret;
 }
 
