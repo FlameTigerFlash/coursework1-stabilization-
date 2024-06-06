@@ -50,8 +50,9 @@ double* intersection(double dist, double rad1, double rad2)
 	return ans;
 }
 
-double* moveData(vector3 v2, double pt1, double pt2, double pt3)
+double* pos2angles(vector3 v2, double* ln)
 {
+	double pt1 = ln[0], pt2 = ln[1], pt3 = ln[2];
 	vector3 start = (0, 0, 0);
 	vector3 side = v2; side.x = 0;
 	double ret[3] = { 0, 0, 0 };
@@ -84,9 +85,28 @@ double* moveData(vector3 v2, double pt1, double pt2, double pt3)
 
 	double* bend = intersection(pt2, pt3, distance(v1, v2));
 	ret[1] -= bend[0];
-	ret[2] = bend[1];
+	ret[2] = bend[1] + bend[0];
 
 	return ret;
+}
+
+vector3 angles2pos(double* ang, double* ln)
+{
+	vector3 j1, j2, j3;
+	j1.x = 0;
+	j1.y = ln[0] * cos(ang[0]);
+	j1.z = ln[0] * sin(ang[0]);
+
+	j2.y = ln[1] * sin(ang[1]) * cos(ang[2]);
+	j2.x = ln[1] * sin(ang[2]);
+	j2.z = ln[1] * (-cos(ang[1])) * cos(ang[2]);
+
+	double ang2 = ang[1] + ang[2];
+	j3.y = ln[2] * sin(ang[1]) * cos(ang2);
+	j3.x = ln[2] * sin(ang2);
+	j3.z = ln[2] * (-cos(ang[1])) * cos(ang2);
+	
+	return j1 + j2 + j3;
 }
 
 vector3* makeCircle(vector3 p1, vector3 p2, double h, int num = 1)
