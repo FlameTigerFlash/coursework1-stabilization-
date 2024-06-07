@@ -1,16 +1,16 @@
 #include <math.h>
 #include "vector3.h"
 
-double* transform(double v[3], double a1, double a2, double a3)
+vector3 transform(vector3 v, double a1, double a2, double a3)
 {
 	double mat[3][3] =
 	{ {cos(a2) * cos(a3), -sin(a3) * cos(a2), sin(a2)},
 	{sin(a1) * sin(a2) * sin(a3) + sin(a3) * cos(a1), -sin(a1) * sin(a2) * sin(a3) + cos(1) * cos(3), -sin(a1) * cos(a2)},
 	{sin(a1) * sin(a3) - sin(a2) * cos(a1) * cos(a3), sin(a1) * cos(a3) + sin(a2) * sin(a3) * cos(a1), cos(a1) * cos(a2)} };
-	double res[3];
-	res[0] = mat[0][0] * v[0] + mat[0][1] * v[1] + mat[0][2] * v[2];
-	res[1] = mat[1][0] * v[0] + mat[1][1] * v[1] + mat[1][2] * v[2];
-	res[2] = mat[2][0] * v[0] + mat[2][1] * v[1] + mat[2][2] * v[2];
+	vector3 res;
+	res.x = mat[0][0] * v.x + mat[0][1] * v.y + mat[0][2] * v.z;
+	res.y = mat[1][0] * v.x + mat[1][1] * v.y + mat[1][2] * v.z;
+	res.z = mat[2][0] * v.x + mat[2][1] * v.y + mat[2][2] * v.z;
 	return res;
 }
 
