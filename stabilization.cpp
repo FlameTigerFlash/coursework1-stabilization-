@@ -1,5 +1,6 @@
 #include "stabilization.h"
 #include "vector3.h"
+#include "settings.h"
 
 #ifndef max
 #define max(a,b) a>b? a:b
@@ -8,7 +9,6 @@
 #ifndef min
 #define min(a,b) a<b? a:b
 #endif
-
 
 
 template<typename T> T clamp(T val, T left, T right)
@@ -30,10 +30,10 @@ vector3* stabilize(vector3* cur)
 	vector3 rightBack = cur[2];
 	vector3 leftBack = cur[3];
 
-	vector3 rightFrontPos = (0, 0, 0);
-	vector3 leftFrontPos = (0, 0, 0);
-	vector3 rightBackPos = (0, 0, 0);
-	vector3 leftBackPos = (0, 0, 0);
+	vector3 rightFrontPos = (ROBOTLENGTH/2, ROBOTWIDTH/2, ROBOTHEIGHT);
+	vector3 leftFrontPos = (ROBOTLENGTH / 2, -ROBOTWIDTH / 2, ROBOTHEIGHT);
+	vector3 rightBackPos = (-ROBOTLENGTH / 2, ROBOTWIDTH / 2, ROBOTHEIGHT);
+	vector3 leftBackPos = (-ROBOTLENGTH / 2, -ROBOTWIDTH / 2, ROBOTHEIGHT);
 
 	double floor = rightFront.z;
 	floor = min(floor, leftFront.z);

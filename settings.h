@@ -4,8 +4,11 @@
 #define USMIN  600 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
 #define USMAX  2400 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
+#define ROBOTLENGTH 350
+#define ROBOTWIDTH 100
+#define ROBOTHEIGHT 80
 
-
+const double length[3] = { 40, 60, 70 };
 //Подключение выводов к конкретным пинам платы
 const int legPins[4][3] = {  
   {0, 1, 2},     // Передняя правая

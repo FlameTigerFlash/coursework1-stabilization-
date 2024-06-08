@@ -1,35 +1,26 @@
 #include "movement.h"
-#define THRESHOLD 0.003
 
-#ifndef max
-#define max(a,b) a>b? a:b
-#endif
-
-#ifndef min
-#define min(a,b) a<b? a:b
-#endif
-
-#ifndef abs
-#define abs(a) a<0? -a:a
-#endif
-
-void move(Adafruit_PWMServoDriver& pwm, int* pins, double* angles)
+void setState(Adafruit_PWMServoDriver& pwm, int state[4][3])
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		if (abs(angles[i]) < THRESHOLD)
+		for (int j = 0; j < 3; j++)
 		{
-			angles[i] = 0;
+			pwm.setPWM(legPins[i][j], 0, state[i][j]);
 		}
 	}
-	double maxAng = max(max(abs(angles[0]), abs(angles[1])), abs(angles[2]));
-	double k = SERVOMAX / maxAng;
-	for (int i = 0; i < 3; i++)
+}
+
+int** getState(Adafruit_PWMServoDriver& pwm)
+{
+	int** state = new int*[3];
+	for (int i = 0; i < 4; i++)
 	{
-		double val = angles[i] * k;
-		if (abs(val) >= SERVOMIN)
+		state[i] = new int[3];
+		for (int j = 0; j < 3; j++)
 		{
-			pwm.setPWM(pins[i], 0, val);
+			state[i][j] = pwm.getPWM(legPins[i][j]);
 		}
 	}
+	return state;
 }

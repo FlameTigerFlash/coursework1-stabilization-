@@ -1,8 +1,9 @@
 #include <math.h>
 #include "vector3.h"
 
-vector3 transform(vector3 v, double a1, double a2, double a3)
+vector3 transform(vector3 v, float* angles)
 {
+	double a1 = angles[0], a2 = angles[1], a3 = angles[3];
 	double mat[3][3] =
 	{ {cos(a2) * cos(a3), -sin(a3) * cos(a2), sin(a2)},
 	{sin(a1) * sin(a2) * sin(a3) + sin(a3) * cos(a1), -sin(a1) * sin(a2) * sin(a3) + cos(1) * cos(3), -sin(a1) * cos(a2)},
@@ -90,14 +91,14 @@ double* pos2angles(vector3 v2, double* ln)
 	return ret;
 }
 
-vector3 angles2pos(double* ang, double* ln)
+vector3 angles2pos(double* ang, double* ln, bool left = false)
 {
 	vector3 j1, j2, j3;
 	j1.x = 0;
-	j1.y = ln[0] * cos(ang[0]);
+	j1.y = ln[0] * cos(ang[0]) * (-1 * left);
 	j1.z = ln[0] * sin(ang[0]);
 
-	j2.y = ln[1] * sin(ang[1]) * cos(ang[2]);
+	j2.y = ln[1] * sin(ang[1]) * cos(ang[2]) * (-1 * left);
 	j2.x = ln[1] * sin(ang[2]);
 	j2.z = ln[1] * (-cos(ang[1])) * cos(ang[2]);
 

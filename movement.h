@@ -4,4 +4,6 @@
 #include "settings.h"
 
 
-void move(Adafruit_PWMServoDriver& pwm, int* pins, double* angles);
+void setState(Adafruit_PWMServoDriver& pwm, int state[4][3]);
+
+int** getState(Adafruit_PWMServoDriver& pwm);
